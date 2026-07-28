@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — Cabling &amp; Networking Courses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-card">
+    <span class="brand">Cable<strong>&amp;</strong>Net Courses</span>
+    <div class="wire-divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    
+    <div class="form-toggle">
+      <button type="button" id="tab-signin" class="active">Log in</button>
+      <button type="button" id="tab-signup">Create account</button>
+    </div>
+
+    <div id="auth-msg" class="msg"></div>
+
+    <form id="form-signin">
+      <div class="field">
+        <label for="signin-email">Email</label>
+        <input type="email" id="signin-email" autocomplete="email" aria-label="Email" required>
+      </div>
+      <div class="field">
+        <label for="signin-password">Password</label>
+        <input type="password" id="signin-password" autocomplete="current-password" aria-label="Password" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Log in</button>
+    </form>
+
+    <form id="form-signup" style="display:none;">
+      <div class="field">
+        <label for="signup-name">Full name</label>
+        <input type="text" id="signup-name" autocomplete="name" aria-label="Full name" required>
+      </div>
+      <div class="field">
+        <label for="signup-email">Email</label>
+        <input type="email" id="signup-email" autocomplete="email" aria-label="Email" required>
+      </div>
+      <div class="field">
+        <label for="signup-password">Password</label>
+        <input type="password" id="signup-password" autocomplete="new-password" aria-label="Password" required minlength="6">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Create account</button>
+    </form>
+
+    <p style="margin-top:1.4rem; font-size:0.85rem;"><a href="index-dynamic.html">&larr; Back to courses</a></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script src="js/auth-form.js"></script>
+</body>
+</html>

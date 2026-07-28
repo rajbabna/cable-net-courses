@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cabling &amp; Networking Courses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">CABLE<strong>&amp;</strong>NET COURSES</div>
+<nav class="nav-actions">
+  <a href="login.html" id="login-link">Log in</a>
+  <a href="login.html" class="btn btn-primary" style="margin-left:1.4rem;" id="request-access">Request access</a>
+  <a href="student-dashboard.html" id="dashboard-link" style="display:none;">Dashboard</a>
+  <span data-user-name style="display:none; margin-left:1.4rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-soft);"></span>
+  <a href="#" data-action="logout" id="logout-link" style="display:none; margin-left:1.4rem;">Log out</a>
+</nav>
+</header>
+
+<div class="wire-divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<main>
+  <section class="hero">
+    <span class="eyebrow">Two courses · Registered access only</span>
+    <h1>Data cabling and networking, taught properly.</h1>
+    <p class="lede">Structured courses covering physical cabling standards and network fundamentals. Access is limited to registered, approved students.</p>
+    <a href="login.html" class="btn btn-primary">Request access</a>
+  </section>
+
+  <!-- This container is populated dynamically by js/load-courses.js (Layer 2) -->
+  <section class="ports"></section>
+
+  <section style="margin-top:3.5rem;">
+    <h2>How access works</h2>
+    <p style="max-width:60ch;">Create an account, and it will be reviewed and approved before you can access course material. This keeps each cohort small and manageable.</p>
+  </section>
+</main>
+
+<div class="wire-divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<footer>© 2026 Raj Babna · Cable&amp;Net Courses</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script>
+  // Check if user is logged in and show appropriate nav
+  (async () => {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    const loginLink = document.getElementById('login-link');
+    const requestAccess = document.getElementById('request-access');
+    const dashboardLink = document.getElementById('dashboard-link');
+    const userName = document.querySelector('[data-user-name]');
+    const logoutLink = document.getElementById('logout-link');
+
+    if (session) {
+      loginLink.style.display = 'none';
+      requestAccess.style.display = 'none';
+      dashboardLink.style.display = 'inline-block';
+      userName.style.display = 'inline';
+      logoutLink.style.display = 'inline-block';
+
+      const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('full_name')
+        .eq('id', session.user.id)
+        .single();
+
+      userName.textContent = profile?.full_name || session.user.email;
+    }
+
+    logoutLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      await supabaseClient.auth.signOut();
+      window.location.href = 'index-dynamic.html';
+    });
+  })();
+</script>
+<!-- Load and render courses dynamically (Layer 2 — needs the courses table) -->
+<script src="js/load-courses.js"></script>
+
+</body>
+</html>

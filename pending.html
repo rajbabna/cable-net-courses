@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Access pending — Cabling &amp; Networking Courses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-card pending-box">
+    <div class="wire-divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <span class="eyebrow">Status: awaiting approval</span>
+    <h2>Your account is registered.</h2>
+    <p>An administrator needs to approve your access before you can open the course material. You'll be able to log in as soon as that happens.</p>
+    <a href="#" data-action="logout" class="btn btn-ghost">Log out</a>
+    <p style="margin-top:1.4rem; font-size:0.85rem;"><a href="index.html">&larr; Back to courses</a></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script>
+document.querySelector('[data-action="logout"]').addEventListener("click", async (e) => {
+  e.preventDefault();
+  await supabaseClient.auth.signOut();
+  window.location.href = "index.html";
+});
+</script>
+</body>
+</html>

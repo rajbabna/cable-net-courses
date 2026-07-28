@@ -1,0 +1,28 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node (if you add build tools later)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Local testing
+*.log
+dist/
+build/
+
+# Keep supabase-client.js but add to .gitignore if adding actual credentials
+# js/supabase-client.js

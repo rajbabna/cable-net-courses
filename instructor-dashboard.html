@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instructor Dashboard — Cable &amp; Net Courses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">CABLE<strong>&amp;</strong>NET COURSES</div>
+  <nav class="nav-actions">
+    <span style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-soft);">Admin Panel</span>
+    <a href="#" data-action="logout" id="logout-link" style="margin-left:1.4rem;">Log out</a>
+  </nav>
+</header>
+
+<div class="wire-divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<main>
+  <section class="course-header">
+    <h1>Instructor Dashboard</h1>
+    <p>Manage courses, students, and progress</p>
+  </section>
+  
+  <div style="margin-top: 2rem; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 1.5rem;">
+    <h2>Admin Controls</h2>
+    <p style="color: var(--ink-soft);">Pending student enrollments and course management coming soon.</p>
+  </div>
+</main>
+
+<div class="wire-divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<footer>© 2026 Raj Babna · Cable&amp;Net Courses</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script>
+  // Check auth and admin role
+  (async () => {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    
+    if (!session) {
+      window.location.href = 'login.html';
+      return;
+    }
+    
+    // Load user profile
+    const { data: profile } = await supabaseClient
+      .from('profiles')
+      .select('role')
+      .eq('id', session.user.id)
+      .single();
+    
+    // Verify admin role
+    if (profile.role !== 'admin') {
+      window.location.href = 'student-dashboard.html';
+      return;
+    }
+    
+    // Logout handler
+    document.getElementById('logout-link').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await supabaseClient.auth.signOut();
+      window.location.href = 'index-dynamic.html';
+    });
+  })();
+</script>
+
+</body>
+</html>

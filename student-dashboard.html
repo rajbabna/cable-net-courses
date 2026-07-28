@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Dashboard — Cable &amp; Net Courses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">CABLE<strong>&amp;</strong>NET COURSES</div>
+  <nav class="nav-actions">
+    <span data-user-name style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-soft);"></span>
+    <a href="#" data-action="logout" id="logout-link" style="margin-left:1.4rem;">Log out</a>
+  </nav>
+</header>
+
+<div class="wire-divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<main>
+  <section class="course-header">
+    <h1>My Courses</h1>
+    <p>Your enrolled courses and progress</p>
+  </section>
+  
+  <div id="enrolled-courses" style="margin-top: 2rem;">
+    <p>Loading your courses...</p>
+  </div>
+</main>
+
+<div class="wire-divider"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<footer>© 2026 Raj Babna · Cable&amp;Net Courses</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/supabase-client.js"></script>
+<script>
+  // Check auth and load user data
+  (async () => {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    
+    if (!session) {
+      window.location.href = 'login.html';
+      return;
+    }
+    
+    // Load user profile
+    const { data: profile } = await supabaseClient
+      .from('profiles')
+      .select('full_name, role, approved')
+      .eq('id', session.user.id)
+      .single();
+    
+    // Verify student role and approved status
+    if (profile.role !== 'student' || !profile.approved) {
+      window.location.href = profile.approved ? 'pending.html' : 'index-dynamic.html';
+      return;
+    }
+    
+    document.querySelector('[data-user-name]').textContent = profile.full_name || session.user.email;
+    
+    // Logout handler
+    document.getElementById('logout-link').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await supabaseClient.auth.signOut();
+      window.location.href = 'index-dynamic.html';
+    });
+  })();
+</script>
+
+</body>
+</html>
