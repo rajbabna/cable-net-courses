@@ -1,22 +1,31 @@
-// Initialize Supabase client
-// Credentials are loaded from environment variables or window object
-// For local development: create .env.local with VITE_SUPABASE_* variables
-// For GitHub Pages: set these in your hosting environment or config file
+// Initialize Supabase client (vanilla JS)
+// Credentials loaded from window.SUPABASE_CONFIG (set in config.js)
 
-let SUPABASE_URL = import.meta.env?.VITE_SUPABASE_URL;
-let SUPABASE_ANON_KEY = import.meta.env?.VITE_SUPABASE_ANON_KEY;
+(function() {
+  // Safely get config, with fallbacks
+  var config = window.SUPABASE_CONFIG || {};
+  var SUPABASE_URL = config.url || "https://your-project.supabase.co";
+  var SUPABASE_ANON_KEY = config.key || "your-anon-key-here";
 
-// Fallback for non-Vite environments (vanilla JS)
-if (!SUPABASE_URL) {
-  SUPABASE_URL = window.SUPABASE_CONFIG?.url || 'https://your-project.supabase.co';
-}
-if (!SUPABASE_ANON_KEY) {
-  SUPABASE_ANON_KEY = window.SUPABASE_CONFIG?.key || 'your-anon-key-here';
-}
+  // Validate credentials
+  if (
+    SUPABASE_URL.includes("your-project") ||
+    SUPABASE_ANON_KEY.includes("your-anon-key")
+  ) {
+    console.error("⚠️ Supabase credentials not configured. Check js/config.js");
+  }
 
-// Validate credentials are set
-if (SUPABASE_URL.includes('your-project') || SUPABASE_ANON_KEY.includes('your-anon-key')) {
-  console.error('⚠️ Supabase credentials not configured. Check js/config.js or environment variables.');
-}
+  // Check if Supabase library loaded
+  if (!window.supabase) {
+    console.error(
+      "❌ window.supabase is undefined! Supabase library failed to load."
+    );
+    throw new Error("Supabase library failed to load");
+  }
 
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  // Create the client
+  window.supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+})();
